@@ -9,7 +9,7 @@ function Payments() {
       const res = await axios.get('http://localhost:8081/payments');
       setPayments(res.data);
     } catch (err) {
-      console.error('❌ Error fetching payments:', err);
+      console.error('Error fetching payments:', err);
     }
   };
 

@@ -7,7 +7,7 @@ function SignUpPage() {
   const [user_id, setUserId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState(''); 
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -27,52 +27,60 @@ function SignUpPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Sign Up</h2>
-      <form onSubmit={handleSignup}>
-        <input 
-          type="text" 
-          placeholder="User ID" 
-          value={user_id}
-          onChange={(e) => setUserId(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input 
-          type="text" 
-          placeholder="Username" 
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <input 
-          type="text" 
-          placeholder="Role (admin/guest)" 
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          required
-          style={styles.input}
-        />
-        <button type="submit" style={styles.button}>Sign Up</button>
-      </form>
+    <div style={styles.pageWrapper}>
+      <div style={styles.container}>
+        <h2 style={styles.heading}>Sign Up</h2>
+        <form onSubmit={handleSignup}>
+          <input
+            type="text"
+            placeholder="User ID"
+            value={user_id}
+            onChange={(e) => setUserId(e.target.value)}
+            required
+            style={styles.input}
+          />
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            style={styles.input}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={styles.input}
+          />
+          <input
+            type="text"
+            placeholder="Role (admin/guest)"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+            style={styles.input}
+          />
+          <button type="submit" style={styles.button}>Sign Up</button>
+        </form>
 
-      <p style={styles.text}>
-        Already have an account? <Link to="/login" style={styles.link}>Login</Link>
-      </p>
+        <p style={styles.text}>
+          Already have an account? <Link to="/login" style={styles.link}>Login</Link>
+        </p>
+      </div>
     </div>
   );
 }
 
 const styles = {
+  pageWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+  },
   container: {
     maxWidth: '400px',
     margin: '100px auto',

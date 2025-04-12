@@ -6,6 +6,7 @@ function Students() {
 
   // Student Search
   const [searchId, setSearchId] = useState("");
+  
   // Delete Student
   const [studentId, setStudentId] = useState("");
 

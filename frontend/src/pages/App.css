@@ -21,8 +21,6 @@ hr {
     border: none;
     margin: 20px 0;
     width: 100%;
-    /* Optional: shorter width */
-
 }
 
 /* Reset margin & ensure full height */
@@ -45,14 +43,13 @@ body {
 }
 
 .sidebar {
-    /* style={{ width: '200px', background: '#363435', padding: '20px', minHeight: '100vh' */
     width: 200px;
     background-color: #363435;
     padding: 0px 20px 20px 20px;
     min-height: 100vh;
     border-right: 5px solid var(--hover-link);
     border-radius: 0px 20px 20px 0px;
-    box-shadow: 20px 0px 20px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 20px 0px 20px 6px rgba(0, 0, 0, 0.3);
 
 }
 
@@ -82,18 +79,6 @@ body {
     border-radius: 8px;
     overflow: hidden;
 }
-
-
-/* style={{
-    width: '100%',
-    borderCollapse: 'collapse',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', // Box shadow
-    borderRadius: '8px',
-    overflow: 'hidden'
-  }}
-> */
-
-
 
 /* Style for .home */
 .home {

@@ -1,4 +1,4 @@
-// ORIGINAL SERVER CODE ------------------------------------------------------------------
+// SERVER CODE ------------------------------------------------------------------
 
 // Import required packages
 const express = require('express');
@@ -6,7 +6,6 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// Create Express app
 const app = express();
 
 // Middleware
@@ -24,10 +23,10 @@ const db = mysql.createConnection({
 // Connect to database
 db.connect((err) => {
     if (err) {
-        console.error('❌ Error connecting to database:', err);
+        console.error('Error connecting to database:', err);
         return;
     }
-    console.log('✅ Connected to MySQL database!');
+    console.log('Connected to MySQL database!');
 });
 
 // ROUTES
@@ -42,7 +41,7 @@ app.get('/students', (req, res) => {
     const sql = 'SELECT * FROM students';
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('❌ Error fetching students:', err);
+            console.error('Error fetching students:', err);
             return res.status(500).json({ error: 'Database error while fetching students' });
         }
         res.json(results);
@@ -54,13 +53,14 @@ app.get('/students/count', (req, res) => {
     const sql = 'SELECT COUNT(*) AS total_students FROM students';
     db.query(sql, (err, result) => {
         if (err) {
-            console.error('❌ Error fetching student count:', err);
+            console.error('Error fetching student count:', err);
             return res.status(500).json({ error: 'Database error while fetching student count' });
         }
         res.json(result[0]); // result[0] because single row
     });
 });
 
+// Insert students
 app.post('/students', (req, res) => {
     const { student_id, name, email, phone, room_id, check_in } = req.body;
 
@@ -77,7 +77,7 @@ app.post('/students', (req, res) => {
 
 });
 
-
+// Delete Students
 app.delete('/students/:student_id', (req, res) => {
     const studentId = req.params.student_id;
     const sql = 'DELETE FROM students WHERE student_id = ?';
@@ -97,7 +97,7 @@ app.get('/rooms', (req, res) => {
     const sql = 'SELECT * FROM rooms';
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('❌ Error fetching rooms:', err);
+            console.error('Error fetching rooms:', err);
             return res.status(500).json({ error: 'Database error while fetching rooms' });
         }
         res.json(results);
@@ -114,10 +114,10 @@ app.get('/rooms/counts', (req, res) => {
     `;
     db.query(sql, (err, result) => {
         if (err) {
-            console.error('❌ Error fetching room counts:', err);
+            console.error('Error fetching room counts:', err);
             return res.status(500).json({ error: 'Database error while fetching room counts' });
         }
-        res.json(result[0]); // result[0] because it's a single row
+        res.json(result[0]); 
     });
 });
 
@@ -126,7 +126,7 @@ app.get('/rooms/counts', (req, res) => {
 app.post('/rooms', (req, res) => {
     const { room_id, type, capacity, availability_status } = req.body;
 
-    // Validate incoming data
+    // check incoming data
     if (!room_id || !type || !capacity || !availability_status) {
         return res.status(400).json({ error: 'Missing required fields: room_id, type, capacity, or availability_status' });
     }
@@ -136,13 +136,15 @@ app.post('/rooms', (req, res) => {
 
     db.query(sql, values, (err, result) => {
         if (err) {
-            console.error('❌ Error adding room:', err);
+            console.error('Error adding room:', err);
             return res.status(500).json({ error: 'Database error while adding room' });
         }
-        res.json({ message: '✅ Room added successfully!', room_id });
+        res.json({ message: 'Room added successfully!', room_id });
     });
 });
 
+
+// Updating room
 app.put('/rooms/:room_id', (req, res) => {
     const roomId = req.params.room_id;
     const { availability_status } = req.body;
@@ -154,25 +156,23 @@ app.put('/rooms/:room_id', (req, res) => {
     const sql = 'UPDATE rooms SET availability_status = ? WHERE room_id = ?';
     db.query(sql, [availability_status, roomId], (err, result) => {
         if (err) {
-            console.error('❌ Error updating room availability:', err);
+            console.error('Error updating room availability:', err);
             return res.status(500).json({ error: 'Database error while updating room availability' });
         }
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Room not found' });
         }
-        res.json({ message: '✅ Room availability updated successfully!' });
+        res.json({ message: 'Room availability updated successfully!' });
     });
 });
 
 
-
-
 // Get all payments
 app.get('/payments', (req, res) => {
-    const sql = 'SELECT * FROM payments ORDER BY payment_date DESC'; // Newest first
+    const sql = 'SELECT * FROM payments ORDER BY payment_date DESC'; 
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('❌ Error fetching payments:', err);
+            console.error('Error fetching payments:', err);
             return res.status(500).json({ error: 'Database error while fetching payments' });
         }
         res.json(results);
@@ -184,20 +184,18 @@ app.get('/payments/pending/count', (req, res) => {
     const sql = "SELECT COUNT(*) AS pending_payments FROM payments WHERE status = 'pending'";
     db.query(sql, (err, result) => {
         if (err) {
-            console.error('❌ Error fetching pending payments count:', err);
+            console.error('Error fetching pending payments count:', err);
             return res.status(500).json({ error: 'Database error while fetching pending payments count' });
         }
-        res.json(result[0]); // result[0] because single row
+        res.json(result[0]); 
     });
 });
-
-
 
 // Add a new payment
 app.post('/payments', (req, res) => {
     const { payment_id, student_id, amount, payment_date, status } = req.body;
 
-    // Validate incoming data
+    // Checking incoming data
     if (!student_id || !amount || !status) {
         return res.status(400).json({ error: 'Missing required fields: student_id, amount, or status' });
     }
@@ -207,10 +205,10 @@ app.post('/payments', (req, res) => {
 
     db.query(sql, values, (err, result) => {
         if (err) {
-            console.error('❌ Error adding payment:', err);
+            console.error('Error adding payment:', err);
             return res.status(500).json({ error: 'Database error while adding payment' });
         }
-        res.json({ message: '✅ Payment added successfully!', payment_id: result.insertId });
+        res.json({ message: 'Payment added successfully!', payment_id: result.insertId });
     });
 });
 
@@ -226,13 +224,13 @@ app.put('/payments/:payment_id', (req, res) => {
     const sql = 'UPDATE payments SET status = ? WHERE payment_id = ?';
     db.query(sql, [status, paymentId], (err, result) => {
         if (err) {
-            console.error('❌ Error updating payment status:', err);
+            console.error('Error updating payment status:', err);
             return res.status(500).json({ error: 'Database error while updating payment status' });
         }
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: 'Payment not found' });
         }
-        res.json({ message: '✅ Payment status updated successfully!' });
+        res.json({ message: 'Payment status updated successfully!' });
     });
 });
 
@@ -243,7 +241,7 @@ app.post('/registerStudent', (req, res) => {
     const { student_id, name, email, phone, room_id, check_in } = student;
     const { payment_id, amount, payment_date, status } = payment;
 
-    // 1. Check if room exists and is available
+    // Check if room exists and is available
     const roomCheckQuery = 'SELECT capacity, availability_status FROM rooms WHERE room_id = ?';
     db.query(roomCheckQuery, [room_id], (err, roomResults) => {
         if (err) return res.status(500).json({ message: 'Database error on room check' });
@@ -254,7 +252,7 @@ app.post('/registerStudent', (req, res) => {
             return res.status(400).json({ message: 'Room is not available' });
         }
 
-        // 2. Count current students in that room
+        // Count current students in that room
         const countQuery = 'SELECT COUNT(*) AS student_count FROM students WHERE room_id = ?';
         db.query(countQuery, [room_id], (err, countResults) => {
             if (err) return res.status(500).json({ message: 'Error counting room occupancy' });
@@ -264,7 +262,7 @@ app.post('/registerStudent', (req, res) => {
                 return res.status(400).json({ message: 'Room is full' });
             }
 
-            // 3. Insert student
+            // Insert student
             const insertStudentQuery = `
           INSERT INTO students (student_id, name, email, phone, room_id, check_in)
           VALUES (?, ?, ?, ?, ?, ?)
@@ -272,7 +270,7 @@ app.post('/registerStudent', (req, res) => {
             db.query(insertStudentQuery, [student_id, name, email, phone, room_id, check_in], (err) => {
                 if (err) return res.status(500).json({ message: 'Error inserting student' });
 
-                // 4. Insert payment
+                // Insert payment
                 const insertPaymentQuery = `
             INSERT INTO payments (payment_id, student_id, amount, payment_date, status)
             VALUES (?, ?, ?, ?, ?)
@@ -280,7 +278,7 @@ app.post('/registerStudent', (req, res) => {
                 db.query(insertPaymentQuery, [payment_id, student_id, amount, payment_date, status], (err) => {
                     if (err) return res.status(500).json({ message: 'Error inserting payment' });
 
-                    // 5. Update room status if needed
+                    // Update room status if needed
                     const newCount = currentCount + 1;
                     if (newCount >= room.capacity) {
                         const updateRoomQuery = 'UPDATE rooms SET availability_status = "occupied" WHERE room_id = ?';
@@ -296,6 +294,7 @@ app.post('/registerStudent', (req, res) => {
     });
 });
 
+// Update payment status
 app.put('/updatePaymentStatus', (req, res) => {
     const { payment_id, status } = req.body;
     const query = 'UPDATE payments SET status = ? WHERE payment_id = ?';
@@ -305,10 +304,11 @@ app.put('/updatePaymentStatus', (req, res) => {
     });
 });
 
+// Update Check out
 app.put("/api/checkout", (req, res) => {
     const { studentId, checkOut } = req.body;
 
-    // Step 1: Get the student's current room_id BEFORE removing it
+    // Get the student's current room_id BEFORE removing it
     const getRoomQuery = `SELECT room_id FROM students WHERE student_id = ?`;
     db.query(getRoomQuery, [studentId], (err, roomResult) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -317,7 +317,7 @@ app.put("/api/checkout", (req, res) => {
         const roomId = roomResult[0].room_id;
         if (!roomId) return res.status(400).json({ error: "No room assigned" });
 
-        // Step 2: Update student's check_out and set room_id to NULL
+        // Update student's check_out and set room_id to NULL
         const updateCheckOutQuery = `
         UPDATE students
         SET check_out = ?, room_id = NULL
@@ -326,7 +326,7 @@ app.put("/api/checkout", (req, res) => {
         db.query(updateCheckOutQuery, [checkOut, studentId], (err, result) => {
             if (err) return res.status(500).json({ error: err.message });
 
-            // Step 3: Count active students in that room (those not checked out)
+            // Count active students in that room (those not checked out)
             const countQuery = `
           SELECT COUNT(*) AS activeCount
           FROM students
@@ -338,7 +338,7 @@ app.put("/api/checkout", (req, res) => {
 
                 const activeCount = countResult[0].activeCount;
 
-                // Step 4: Get capacity of the room
+                // Get capacity of the room
                 const capacityQuery = `SELECT capacity FROM rooms WHERE room_id = ?`;
                 db.query(capacityQuery, [roomId], (err, capacityResult) => {
                     if (err) return res.status(500).json({ error: err.message });
@@ -346,7 +346,7 @@ app.put("/api/checkout", (req, res) => {
                     const capacity = capacityResult[0].capacity;
                     const newStatus = activeCount >= capacity ? "occupied" : "available";
 
-                    // Step 5: Update room availability status
+                    // Update room availability status
                     const updateRoomQuery = `
               UPDATE rooms
               SET availability_status = ?
@@ -389,11 +389,11 @@ app.post("/api/rooms", (req, res) => {
 });
 
 // DELETE room by room_id
-// DELETE a room
+
 app.delete('/api/rooms/:roomId', (req, res) => {
     const roomId = req.params.roomId;
 
-    // Step 1: Check if any student is still occupying the room
+    // Check if any student is still occupying the room
     const checkQuery = "SELECT * FROM students WHERE room_id = ? AND check_out IS NULL";
 
     db.query(checkQuery, [roomId], (err, result) => {
@@ -403,7 +403,7 @@ app.delete('/api/rooms/:roomId', (req, res) => {
             return res.status(400).json({ error: "Cannot delete room: It is currently assigned to one or more students." });
         }
 
-        // Step 2: Safe to delete
+        // Safe to delete
         const deleteQuery = "DELETE FROM rooms WHERE room_id = ?";
 
         db.query(deleteQuery, [roomId], (err2, result2) => {
@@ -440,7 +440,7 @@ app.get("/api/room/:roomId/students", (req, res) => {
 });
 
 
-//SEARCH STUDENTS DETAILS 
+// Full student details
 app.get("/api/student/:id", (req, res) => {
     const studentId = req.params.id;
 
@@ -471,7 +471,7 @@ app.get("/api/student/:id", (req, res) => {
     });
 });
 
-// DELETE STUDENT
+// Delete Student
 
 app.delete("/api/students/:student_id", (req, res) => {
     const studentId = req.params.student_id;
@@ -488,7 +488,7 @@ app.delete("/api/students/:student_id", (req, res) => {
     });
 });
 
-// DELETE /api/payments/:payment_id
+// Delete Payment
 app.delete('/api/payments/:payment_id', (req, res) => {
     const paymentId = req.params.payment_id;
 
@@ -531,7 +531,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// SIGNUP Route
+// SignUp Route
 app.post('/signup', async (req, res) => {
     const { user_id, username, password, role } = req.body;
 
@@ -563,5 +563,5 @@ app.post('/signup', async (req, res) => {
 // Start the server
 const PORT = 8081;
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

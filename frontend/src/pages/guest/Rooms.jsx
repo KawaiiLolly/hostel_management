@@ -6,18 +6,17 @@ function Rooms() {
   // Room States
   const [rooms, setRooms] = useState([]);
 
-  // 1. First, create a separate function
+  // Fetch
   const fetchRooms = async () => {
     try {
       const response = await fetch('http://localhost:8081/rooms');
       const data = await response.json();
       setRooms(data);
     } catch (err) {
-      console.error('❌ Error fetching rooms:', err);
+      console.error('Error fetching rooms:', err);
     }
   };
 
-  // 2. Then call it inside useEffect
   useEffect(() => {
     fetchRooms();
   }, []);
@@ -25,8 +24,6 @@ function Rooms() {
 
   return (
     <div style={{ padding: "10px" }}>
-
-
       <h1>Room <span style={{ color: '#e95d2c' }}>List</span></h1>
       <table border="1" cellPadding="10" cellSpacing="0" className='table table-hover table-shadow'>
         <thead className='table-dark'>
@@ -46,7 +43,6 @@ function Rooms() {
               <td style={{ color: room.availability_status?.toLowerCase() === 'available' ? 'green' : 'red' }}>
                 {room.availability_status}
               </td>
-
             </tr>
           ))}
         </tbody>

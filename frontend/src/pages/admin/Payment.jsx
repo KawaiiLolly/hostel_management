@@ -9,7 +9,7 @@ function Payments() {
       const res = await axios.get('http://localhost:8081/payments');
       setPayments(res.data);
     } catch (err) {
-      console.error('❌ Error fetching payments:', err);
+      console.error('Error fetching payments:', err);
     }
   };
 
@@ -17,7 +17,7 @@ function Payments() {
     fetchPayments();
   }, []);
 
-  // DELETE PAYMENT
+  // Delete Payement
   const [paymentId, setPaymentId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -34,8 +34,8 @@ function Payments() {
       setError("");
       setPaymentId("");
       setTimeout(() => {
-        window.location.reload(); // ✅ Refresh the entire page
-      }, 1000); // Optional: short delay for user to see success message
+        window.location.reload(); 
+      }, 1000); 
     } catch (err) {
       setError(err.response?.data?.message || "Error deleting payment");
       setMessage("");
@@ -72,6 +72,7 @@ function Payments() {
 
       <hr />
 
+      {/* Delete Payment Form */}
       <div style={{ padding: '10px', maxWidth: '400px' }}>
         <h3>Delete Payment by ID</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

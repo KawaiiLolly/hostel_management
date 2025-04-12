@@ -25,7 +25,7 @@ function Home() {
         pending_payments: paymentsData.pending_payments,
       });
     } catch (err) {
-      console.error('❌ Error fetching counts:', err);
+      console.error('Error fetching counts:', err);
     }
   };
 

@@ -110,14 +110,9 @@ function Form() {
     }
   };
 
-
-
-
-
-
   return (
     <div style={{ padding: "20px", display: 'flex', flexDirection: 'column' }}>
-      <h1>Add New Student <span style={{color: '#e95d2c'}}>Details</span></h1>
+      <h1>Add New Student <span style={{ color: '#e95d2c' }}>Details</span></h1>
       <h3>Student Details</h3>
       <form onSubmit={handleSubmitAll} style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '400px' }}>
 
@@ -147,7 +142,7 @@ function Form() {
       </form>
       <hr />
 
-      <h1>Updates <span style={{color: '#e95d2c'}}>Form</span></h1>
+      <h1>Updates <span style={{ color: '#e95d2c' }}>Form</span></h1>
 
       {/* Update Payment Status Section */}
       <h3 style={{ marginTop: '40px' }}>Update Payment Status</h3>
@@ -180,13 +175,13 @@ function Form() {
           onChange={(e) => setCheckOut(e.target.value)}
           required
         />
-        <button className='button'  type="submit" style={{ padding: '10px', background: 'blue', color: 'white', border: 'none' }}>
+        <button className='button' type="submit" style={{ padding: '10px', background: 'blue', color: 'white', border: 'none' }}>
           Update Check-Out
         </button>
       </form>
 
       <hr />
-      <h1 style={{ marginTop: '40px' }}>Add New <span style={{color: '#e95d2c'}}>Room</span></h1>
+      <h1 style={{ marginTop: '40px' }}>Add New <span style={{ color: '#e95d2c' }}>Room</span></h1>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' }}>
         <input
           type="number"
@@ -218,14 +213,13 @@ function Form() {
           <option value="available">Available</option>
           <option value="occupied">Occupied</option>
         </select>
-        <button className='button' 
+        <button className='button'
           onClick={handleAddRoom}
           style={{ padding: '10px', background: 'teal', color: 'white', border: 'none' }}
         >
           Add Room
         </button>
       </div>
-
       <hr />
     </div>
   );

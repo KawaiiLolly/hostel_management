@@ -48,17 +48,14 @@ function Students() {
       setDeleteMessage(res.data.message);
       setDeleteError("");
       setStudentId("");
-  
-      // Refresh student list after short delay (for UX)
       setTimeout(() => {
-        fetchStudents(); // refresh data
+        fetchStudents(); 
       }, 300);
     } catch (err) {
       setDeleteError(err.response?.data?.message || "Something went wrong");
       setDeleteMessage("");
     }
   };
-  
 
   return (
     <div style={{ padding: "10px" }}>

@@ -6,7 +6,6 @@ function Rooms() {
   // Room States
   const [rooms, setRooms] = useState([]);
 
-
   // Search in rooms
   const [searchRoomId, setSearchRoomId] = useState("");
   const [roomStudents, setRoomStudents] = useState([]);
@@ -29,7 +28,7 @@ function Rooms() {
     setLoading(false);
   };
 
-  // 1. First, create a separate function
+  // Fetch Rooms
   const fetchRooms = async () => {
     try {
       const response = await fetch('http://localhost:8081/rooms');
@@ -40,13 +39,12 @@ function Rooms() {
     }
   };
 
-  // 2. Then call it inside useEffect
   useEffect(() => {
     fetchRooms();
   }, []);
 
 
-  // DELETE ROOM
+  // Delete Room
 
   const [deleteRoomId, setDeleteRoomId] = useState("");
 
@@ -60,7 +58,7 @@ function Rooms() {
       const response = await axios.delete(`http://localhost:8081/api/rooms/${deleteRoomId}`);
       alert(response.data.message);
       setDeleteRoomId("");
-      fetchRooms(); // Refresh the room list
+      fetchRooms();
     } catch (error) {
       alert("Delete failed: " + (error.response?.data?.error || error.message));
     }
@@ -69,8 +67,6 @@ function Rooms() {
 
   return (
     <div style={{ padding: "10px" }}>
-
-
       <h1>Room <span style={{color: '#e95d2c'}}>List</span></h1>
       <table border="1" cellPadding="10" cellSpacing="0" className='table table-hover table-shadow'>
         <thead className='table-dark'>
@@ -97,6 +93,8 @@ function Rooms() {
       </table>
 
       <hr />
+
+      {/* Find in rooms form */}
 
       <h3 style={{ marginTop: "40px" }}>Find Students in a Room</h3>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxWidth: "400px" }}>
@@ -139,6 +137,8 @@ function Rooms() {
 
       <hr />
 
+      {/* Delete room */}
+
       <h3 style={{ marginTop: '40px' }}>Delete Room</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' }}>
         <input
@@ -155,9 +155,6 @@ function Rooms() {
           Delete Room
         </button>
       </div>
-
-
-
     </div>
   );
 }

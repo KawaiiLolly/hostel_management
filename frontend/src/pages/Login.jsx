@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import './LoginSign.css'
+import './LoginSign.css';
 
 function LoginPage() {
     const [username, setUsername] = useState('');
@@ -17,7 +17,6 @@ function LoginPage() {
             });
 
             const { role } = response.data;
-            // Redirect based on role
             if (role === 'admin') {
                 navigate('/admin');
             } else {
@@ -25,49 +24,56 @@ function LoginPage() {
             }
         } catch (error) {
             alert(error.response?.data?.error || 'Login failed');
-        }   
+        }
     };
 
     return (
-        <div style={styles.container}>
-            <h2 style={styles.heading}>Log In</h2>
-            <form onSubmit={handleLogin}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    style={styles.input}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    style={styles.input}
-                />
-                <button type="submit" style={styles.button}>Log In</button>
-            </form>
+        <div style={styles.pageWrapper}>
+            <div style={styles.container}>
+                <h2 style={styles.heading}>Log In</h2>
+                <form onSubmit={handleLogin}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                        style={styles.input}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        style={styles.input}
+                    />
+                    <button type="submit" style={styles.button}>Log In</button>
+                </form>
 
-            <p style={styles.text}>
-                Don't have an account? <Link to="/signup" style={styles.link}>Sign up</Link>
-            </p>
+                <p style={styles.text}>
+                    Don't have an account? <Link to="/signup" style={styles.link}>Sign up</Link>
+                </p>
+            </div>
         </div>
     );
 }
 
 const styles = {
+    pageWrapper: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+    },
     container: {
         maxWidth: '400px',
-        margin: '100px auto',
+        width: '100%',
         padding: '20px',
         textAlign: 'center',
         boxShadow: 'rgba(0, 0, 0, 0.9) 0 20px 20px 2px',
         borderRadius: '8px',
         backgroundColor: 'white',
-
     },
     heading: {
         marginBottom: '20px',

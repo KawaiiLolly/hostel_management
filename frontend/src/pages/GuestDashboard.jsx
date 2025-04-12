@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import logo from './assets/nit-white.png';
-import '../App.css'; // optional
+import '../App.css';
 
 const GuestDashboard = () => {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ const GuestDashboard = () => {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
+      
       {/* Sidebar */}
       <div className="sidebar" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '220px', background: '#2e2e38', color: 'white', padding: '20px' }}>
         <div>
