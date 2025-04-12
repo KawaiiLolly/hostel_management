@@ -48,25 +48,25 @@ function Form() {
 
       await axios.post('http://localhost:8081/registerStudent', payload);
 
-      alert('✅ Student and Payment added successfully!');
+      alert('Student and Payment added successfully!');
 
       setNewStudent({ student_id: '', name: '', email: '', phone: '', room_id: '', check_in: '' });
       setNewPayment({ payment_id: '', student_id: '', amount: '', payment_date: '', status: 'pending' });
 
     } catch (err) {
-      console.error('❌ Error submitting data:', err);
-      alert('❌ Failed to submit data. Please try again.');
+      console.error('Error submitting data:', err);
+      alert('Failed to submit data. Please try again.');
     }
   };
 
   const handlePaymentUpdate = async () => {
     try {
       await axios.put('http://localhost:8081/updatePaymentStatus', updatePayment);
-      alert('✅ Payment status updated successfully!');
+      alert('Payment status updated successfully!');
       setUpdatePayment({ payment_id: '', status: 'pending' });
     } catch (err) {
-      console.error('❌ Error updating payment status:', err);
-      alert('❌ Failed to update payment status.');
+      console.error('Error updating payment status:', err);
+      alert('Failed to update payment status.');
     }
   };
 
