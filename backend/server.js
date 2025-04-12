@@ -1,8 +1,11 @@
-// Import required packages
-const express = require("express");
-const mysql = require("mysql2");
-const cors = require("cors");
+// ORIGINAL SERVER CODE ------------------------------------------------------------------
 
+// Import required packages
+const express = require('express');
+const mysql = require('mysql2');
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 // Create Express app
 const app = express();
 
@@ -389,32 +392,32 @@ app.post("/api/rooms", (req, res) => {
 // DELETE a room
 app.delete('/api/rooms/:roomId', (req, res) => {
     const roomId = req.params.roomId;
-  
+
     // Step 1: Check if any student is still occupying the room
     const checkQuery = "SELECT * FROM students WHERE room_id = ? AND check_out IS NULL";
-  
+
     db.query(checkQuery, [roomId], (err, result) => {
-      if (err) return res.status(500).json({ error: "Database error during check." });
-  
-      if (result.length > 0) {
-        return res.status(400).json({ error: "Cannot delete room: It is currently assigned to one or more students." });
-      }
-  
-      // Step 2: Safe to delete
-      const deleteQuery = "DELETE FROM rooms WHERE room_id = ?";
-  
-      db.query(deleteQuery, [roomId], (err2, result2) => {
-        if (err2) return res.status(500).json({ error: "Database error during deletion." });
-  
-        if (result2.affectedRows === 0) {
-          return res.status(404).json({ error: "Room not found." });
+        if (err) return res.status(500).json({ error: "Database error during check." });
+
+        if (result.length > 0) {
+            return res.status(400).json({ error: "Cannot delete room: It is currently assigned to one or more students." });
         }
-  
-        return res.json({ message: "Room deleted successfully." });
-      });
+
+        // Step 2: Safe to delete
+        const deleteQuery = "DELETE FROM rooms WHERE room_id = ?";
+
+        db.query(deleteQuery, [roomId], (err2, result2) => {
+            if (err2) return res.status(500).json({ error: "Database error during deletion." });
+
+            if (result2.affectedRows === 0) {
+                return res.status(404).json({ error: "Room not found." });
+            }
+
+            return res.json({ message: "Room deleted successfully." });
+        });
     });
-  });
-  
+});
+
 // Search in Rooms
 app.get("/api/room/:roomId/students", (req, res) => {
     const roomId = req.params.roomId;
@@ -472,38 +475,90 @@ app.get("/api/student/:id", (req, res) => {
 
 app.delete("/api/students/:student_id", (req, res) => {
     const studentId = req.params.student_id;
-  
+
     const deleteQuery = "DELETE FROM students WHERE student_id = ?";
     db.query(deleteQuery, [studentId], (err, result) => {
-      if (err) return res.status(500).json({ message: "Database error", error: err.message });
-  
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ message: "Student not found" });
-      }
-  
-      res.json({ message: "Student deleted successfully" });
+        if (err) return res.status(500).json({ message: "Database error", error: err.message });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Student not found" });
+        }
+
+        res.json({ message: "Student deleted successfully" });
     });
-  });
-  
-  // DELETE /api/payments/:payment_id
+});
+
+// DELETE /api/payments/:payment_id
 app.delete('/api/payments/:payment_id', (req, res) => {
     const paymentId = req.params.payment_id;
-  
+
     const query = "DELETE FROM payments WHERE payment_id = ?";
     db.query(query, [paymentId], (err, result) => {
-      if (err) {
-        console.error("Error deleting payment:", err);
-        return res.status(500).json({ message: "Server error while deleting payment" });
-      }
-  
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ message: "Payment not found" });
-      }
-  
-      res.json({ message: "Payment deleted successfully" });
+        if (err) {
+            console.error("Error deleting payment:", err);
+            return res.status(500).json({ message: "Server error while deleting payment" });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Payment not found" });
+        }
+
+        res.json({ message: "Payment deleted successfully" });
     });
-  });
-  
+});
+
+// Login route
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    db.query('SELECT * FROM admins WHERE username = ?', [username], async (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database error' });
+
+        if (results.length === 0) {
+            return res.status(400).json({ error: 'Invalid username or password' });
+        }
+
+        const user = results[0];
+        const isMatch = await bcrypt.compare(password, user.password_hash);
+
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Invalid username or password' });
+        }
+
+        const token = jwt.sign({ user_id: user.user_id, role: user.role }, 'your_secret_key', { expiresIn: '1h' });
+
+        res.json({ message: 'Login successful', role: user.role, token });
+    });
+});
+
+// SIGNUP Route
+app.post('/signup', async (req, res) => {
+    const { user_id, username, password, role } = req.body;
+
+    db.query('SELECT * FROM admins WHERE username = ?', [username], async (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database error' });
+
+        if (results.length > 0) {
+            return res.status(400).json({ error: 'Username already exists' });
+        }
+
+        try {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+
+            db.query('INSERT INTO admins (user_id, username, password_hash, role) VALUES (?, ?, ?, ?)',
+                [user_id, username, hashedPassword, role || 'guest'],
+                (err, result) => {
+                    if (err) return res.status(500).json({ error: 'Failed to create user' });
+
+                    res.json({ message: 'User created successfully' });
+                }
+            );
+        } catch (error) {
+            res.status(500).json({ error: 'Error while creating user' });
+        }
+    });
+});
 
 // Start the server
 const PORT = 8081;

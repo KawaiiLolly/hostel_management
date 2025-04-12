@@ -27,10 +27,17 @@ hr {
 
 /* Reset margin & ensure full height */
 html,
-body {
+body,
+#root {
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
-    height: 100%;
+}
+
+
+html,
+body {
     background-color: var(--bg-color);
     color: var(--text-color);
     background-image: url('./assets/bg.png');
@@ -40,9 +47,7 @@ body {
     background-size: cover;
 }
 
-#root {
-    height: 100%;
-}
+
 
 .sidebar {
     /* style={{ width: '200px', background: '#363435', padding: '20px', minHeight: '100vh' */
@@ -84,16 +89,6 @@ body {
 }
 
 
-/* style={{
-    width: '100%',
-    borderCollapse: 'collapse',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', // Box shadow
-    borderRadius: '8px',
-    overflow: 'hidden'
-  }}
-> */
-
-
 
 /* Style for .home */
 .home {
@@ -123,4 +118,8 @@ body {
     padding-top: 5px;
     width: 120px;
     margin: 20px 20px;
+}
+
+.logout-button:hover {
+    opacity: 0.8;
 }
