@@ -1,0 +1,126 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --bg-color: #1f222b;
+    --colora: #111f2b;
+    --colorb: #243644;
+    --colorc: #243744;
+    --hover-link: #96a4a8;
+    --text-color: #f0f0f0;
+    --hr-color: #9f9da0;
+    --link-active-color: #e95d2c;
+}
+
+
+hr {
+    height: 3px;
+    background-color: var(--hr-color);
+    border: none;
+    margin: 20px 0;
+    width: 100%;
+    /* Optional: shorter width */
+
+}
+
+/* Reset margin & ensure full height */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    background-image: url('./assets/bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#root {
+    height: 100%;
+}
+
+.sidebar {
+    /* style={{ width: '200px', background: '#363435', padding: '20px', minHeight: '100vh' */
+    width: 200px;
+    background-color: #363435;
+    padding: 0px 20px 20px 20px;
+    min-height: 100vh;
+    border-right: 5px solid var(--hover-link);
+    border-radius: 0px 20px 20px 0px;
+    box-shadow: 20px 0px 20px 6px rgba(0, 0, 0, 0.1);
+
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.sidebar a:hover {
+    color: var(--hover-link);
+}
+
+.sidebar a.active {
+    color: var(--link-active-color);
+    text-decoration: underline;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.table-shadow {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 5px 20px 0px rgb(0 0 0 / 80%);
+    ;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+/* style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', // Box shadow
+    borderRadius: '8px',
+    overflow: 'hidden'
+  }}
+> */
+
+
+
+/* Style for .home */
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+
+.email-link {
+    color: #f0f0f0;
+    text-decoration: none;
+}
+
+.email-link:hover {
+    text-decoration: underline;
+}
+
+.sidebar img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
+    width: 120px;
+    margin: 20px 20px;
+}
