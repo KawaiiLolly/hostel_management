@@ -105,7 +105,7 @@ function Students() {
           />
           <button className='button' 
             onClick={handleSearch}
-            style={{ padding: "10px 20px", background: "green", color: "white", border: "none" }}
+            style={{ padding: "10px 20px", background: "teal", color: "white", border: "none" }}
           >
             Search
           </button>
@@ -114,8 +114,8 @@ function Students() {
         {searchError && <p style={{ color: "red", marginTop: "10px" }}>{searchError}</p>}
 
         {studentData && (
-          <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "15px" }}>
-            <h3>Student Info</h3>
+          <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "15px", background: '#363435' }}>
+            <h3>Student <span style={{color: '#e95d2c'}}>Info</span></h3>
             <p><strong>ID:</strong> {studentData.student_id}</p>
             <p><strong>Name:</strong> {studentData.name}</p>
             <p><strong>Email:</strong> {studentData.email}</p>
@@ -123,10 +123,10 @@ function Students() {
             <p><strong>Check-in:</strong> {studentData.check_in}</p>
             <p><strong>Check-out:</strong> {studentData.check_out || "N/A"}</p>
 
-            <h4>Room Info</h4>
+            <h4>Room <span style={{color: '#e95d2c'}}>Info</span></h4>
             <p>{studentData.room_info || "NOT ASSIGNED/CHECKED_OUT"}</p>
 
-            <h4>Payment Info</h4>
+            <h4>Payment <span style={{color: '#e95d2c'}}>Info</span></h4>
             {studentData.payment_id ? (
               <>
                 <p><strong>Payment ID:</strong> {studentData.payment_id}</p>

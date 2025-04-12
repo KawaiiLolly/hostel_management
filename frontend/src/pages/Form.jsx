@@ -220,7 +220,7 @@ function Form() {
         </select>
         <button className='button' 
           onClick={handleAddRoom}
-          style={{ padding: '10px', background: 'green', color: 'white', border: 'none' }}
+          style={{ padding: '10px', background: 'teal', color: 'white', border: 'none' }}
         >
           Add Room
         </button>

@@ -124,7 +124,7 @@ function Rooms() {
         <p>Loading...</p>
       ) : roomStudents.length > 0 ? (
         <div style={{ marginTop: "20px" }}>
-          <h3>Students in Room {searchRoomId}</h3>
+          <h3>Students in Room <span style={{color: '#e95d2c'}}>{searchRoomId}</span></h3>
           <ul>
             {roomStudents.map((student) => (
               <li key={student.student_id}>
