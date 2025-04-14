@@ -25,6 +25,7 @@ function Students() {
   return (
     <div style={{ padding: "10px" }}>
       <h1>Students <span style={{ color: '#e95d2c' }}>List</span></h1>
+      <hr />
       <table border="1" cellPadding="10" cellSpacing="0" className='table table-hover table-shadow'>
         <thead className='table-dark'>
           <tr>
